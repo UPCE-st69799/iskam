@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -23,13 +24,9 @@ public class Ingredient {
     @Column(nullable = false)
     private String unit;
 
-    @Column(nullable = false)
-    private Boolean allergen;
+    @ManyToMany(mappedBy = "ingredients")
+    private List<Food> foods;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "food_id", nullable = false)
-    private Food food;
-
-    // constructors, getters, and setters
+    // constructor, getters, and setters
 }
 

@@ -36,7 +36,11 @@ public class Food {
     @Column(nullable = false)
     private String image;
 
-    @OneToMany(mappedBy = "food", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany
+    @JoinTable(
+            name = "food_ingredient",
+            joinColumns = @JoinColumn(name = "food_id"),
+            inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
     private List<Ingredient> ingredients = new ArrayList<>();
 
 }
