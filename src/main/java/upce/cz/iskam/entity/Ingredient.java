@@ -2,6 +2,7 @@ package upce.cz.iskam.entity;
 
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -22,6 +23,7 @@ public class Ingredient {
     @Column(nullable = false)
     private Boolean allergen;
 
+    @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "ingredients")
     private List<Food> foods;
 

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import upce.cz.iskam.entity.Ingredient;
 import upce.cz.iskam.repository.IngredientRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +16,7 @@ public class IngredientService {
     public IngredientService(IngredientRepository ingredientRepository) {
         this.ingredientRepository = ingredientRepository;
     }
-
+    @Transactional
     public List<Ingredient> getAllIngredients() {
         return (List<Ingredient>) ingredientRepository.findAll();
     }
@@ -23,11 +24,11 @@ public class IngredientService {
     public Optional<Ingredient> getIngredientById(Long id) {
         return ingredientRepository.findById(id);
     }
-
+    @Transactional
     public Ingredient createIngredient(Ingredient ingredient) {
         return ingredientRepository.save(ingredient);
     }
-
+    @Transactional
     public Ingredient updateIngredient(Long id, Ingredient ingredient) {
         Optional<Ingredient> existingIngredient = ingredientRepository.findById(id);
         if (existingIngredient.isPresent()) {
@@ -38,7 +39,7 @@ public class IngredientService {
         }
         return null;
     }
-
+    @Transactional
     public void deleteIngredient(Long id) {
         if (ingredientRepository.existsById(id)) {
             ingredientRepository.deleteById(id);

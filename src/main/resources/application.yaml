@@ -10,5 +10,7 @@ spring:
     password: nnpia
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     generate-ddl: true
+
+

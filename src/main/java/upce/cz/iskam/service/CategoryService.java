@@ -5,6 +5,7 @@ import upce.cz.iskam.entity.Category;
 import upce.cz.iskam.entity.Ingredient;
 import upce.cz.iskam.repository.CategoryRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,7 +17,7 @@ public class CategoryService {
     public CategoryService(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
-
+    @Transactional
     public Iterable<Category> getAllCategories() {
         return categoryRepository.findAll();
     }
@@ -24,11 +25,11 @@ public class CategoryService {
     public Optional<Category> getCategoryById(Long id) {
         return categoryRepository.findById(id);
     }
-
+    @Transactional
     public Category createCategory(Category category) {
         return categoryRepository.save(category);
     }
-
+    @Transactional
     public Category updateCategory(Long id, Category category) {
         Optional<Category> categoryToUpdate = categoryRepository.findById(id);
         if (categoryToUpdate.isPresent()) {
@@ -38,7 +39,7 @@ public class CategoryService {
         return null;
     }
 
-
+    @Transactional
     public void deleteCategory(Long id) {
         Optional<Category> categoryToDelete = categoryRepository.findById(id);
         if (categoryToDelete.isPresent()) {

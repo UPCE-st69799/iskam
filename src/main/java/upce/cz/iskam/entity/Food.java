@@ -2,8 +2,10 @@ package upce.cz.iskam.entity;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -31,16 +33,21 @@ public class Food {
     private Double price;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
     @Column(nullable = false)
     private String image;
 
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "food_ingredient",
             joinColumns = @JoinColumn(name = "food_id"),
             inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
+
+    @ToString.Exclude // It will prevent to infinity loop in Lombok ToString generation because field from each class points to themselves
+    @JsonIgnore
     private List<Ingredient> ingredients = new ArrayList<>();
 
 
