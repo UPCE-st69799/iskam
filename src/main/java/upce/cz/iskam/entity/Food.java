@@ -17,6 +17,7 @@ import java.util.List;
 public class Food {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -36,12 +37,12 @@ public class Food {
     @Column(nullable = false)
     private String image;
 
-    @ManyToMany
-    @JoinTable(
-            name = "food_ingredient",
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "food_ingredient",
             joinColumns = @JoinColumn(name = "food_id"),
             inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
     private List<Ingredient> ingredients = new ArrayList<>();
+
 
 }
 

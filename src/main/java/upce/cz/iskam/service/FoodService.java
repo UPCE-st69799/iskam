@@ -18,14 +18,7 @@ public class FoodService {
         this.foodRepository = foodRepository;
     }
 
-    public Food createFood(String name, String description, Double price, Category category, String image, List<Ingredient> ingredients) {
-        Food food = new Food();
-        food.setName(name);
-        food.setDescription(description);
-        food.setPrice(price);
-        food.setCategory(category);
-        food.setImage(image);
-        food.setIngredients(ingredients);
+    public Food createFood(Food food) {
         return foodRepository.save(food);
     }
     public List<Food> getAllFoods() {

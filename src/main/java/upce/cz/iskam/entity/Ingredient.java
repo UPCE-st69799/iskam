@@ -13,20 +13,18 @@ import java.util.List;
 public class Ingredient {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
-    private Double quantity;
-
-    @Column(nullable = false)
-    private String unit;
+    private Boolean allergen;
 
     @ManyToMany(mappedBy = "ingredients")
     private List<Food> foods;
 
-    // constructor, getters, and setters
+
 }
 
