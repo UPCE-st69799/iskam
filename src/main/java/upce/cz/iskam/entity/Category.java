@@ -2,8 +2,10 @@ package upce.cz.iskam.entity;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 
 import javax.persistence.*;
@@ -22,6 +24,8 @@ public class Category {
     @Column(nullable = false)
     private String name;
 
+    @JsonIgnore
+    @ToString.Exclude
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Food> foods = new ArrayList<>();
 

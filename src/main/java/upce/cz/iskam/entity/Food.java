@@ -28,9 +28,9 @@ public class Food {
     @Column(nullable = false)
     private String description;
 
-
+    @ToString.Exclude
     @Column(nullable = false)
-    private Double price;
+    private double price;
 
     @ManyToOne
     @JsonIgnore
@@ -41,7 +41,7 @@ public class Food {
     private String image;
 
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name = "food_ingredient",
             joinColumns = @JoinColumn(name = "food_id"),
             inverseJoinColumns = @JoinColumn(name = "ingredient_id"))

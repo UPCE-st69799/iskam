@@ -24,7 +24,7 @@ public class Ingredient {
     private Boolean allergen;
 
     @EqualsAndHashCode.Exclude
-    @ManyToMany(mappedBy = "ingredients")
+    @ManyToMany(mappedBy = "ingredients",cascade = CascadeType.ALL)
     private List<Food> foods;
 
 
