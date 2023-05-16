@@ -1,19 +1,22 @@
 package upce.cz.iskam.entity;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import upce.cz.iskam.dto.AppUserResponseDtoV1;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import static javax.persistence.FetchType.EAGER;
+
 @Data
-@NoArgsConstructor
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,46 +28,8 @@ public class AppUser {
     @Column
     private String password;
 
-    @Column
-    private Boolean active;
-
-    @Column
-    private LocalDateTime creationDate;
-
-    @Column
-    private LocalDateTime updateDate;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Collection<Role> roles = Collections.emptyList();
 
 
-    @EqualsAndHashCode.Exclude
-    @ManyToMany(mappedBy = "users")
-    private List<Role> roles = Collections.emptyList();
-
-    public AppUser(Long id, String username, String password, Boolean active, LocalDateTime creationDate, LocalDateTime updateDate) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.active = active;
-        this.creationDate = creationDate;
-        this.updateDate = updateDate;
-    }
-
-    public AppUser(String username, String password, Boolean active, LocalDateTime creationDate, LocalDateTime updateDate) {
-        this.username = username;
-        this.password = password;
-        this.active = active;
-        this.creationDate = creationDate;
-        this.updateDate = updateDate;
-    }
-
-    public AppUserResponseDtoV1 toDto() {
-        return new AppUserResponseDtoV1(
-                getId(),
-                getUsername(),
-                getPassword(),
-                getActive(),
-                getCreationDate(),
-                getUpdateDate(),
-                getRoles()
-        );
-    }
 }

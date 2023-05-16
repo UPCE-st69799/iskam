@@ -5,9 +5,8 @@ import org.springframework.stereotype.Repository;
 import upce.cz.iskam.entity.Role;
 
 @Repository
-public interface RoleRepository extends JpaRepository<Role, Long> {
+public interface RoleRepo extends JpaRepository<Role, Long> {
 
-    // Any additional methods specific to Role entity can be added here
-
+    Role findByName(String role);
 }
 
