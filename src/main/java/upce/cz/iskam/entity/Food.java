@@ -33,7 +33,6 @@ public class Food {
     private double price;
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
@@ -46,7 +45,7 @@ public class Food {
             joinColumns = @JoinColumn(name = "food_id"),
             inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
 
-    @ToString.Exclude // It will prevent to infinity loop in Lombok ToString generation because field from each class points to themselves
+    @ToString.Exclude
     @JsonIgnore
     private List<Ingredient> ingredients = new ArrayList<>();
 

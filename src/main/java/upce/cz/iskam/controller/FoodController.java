@@ -89,7 +89,7 @@ public class FoodController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateFood(@PathVariable Long id, @RequestBody Food food) {
+    public ResponseEntity<?> updateFood(@PathVariable Long id, @RequestBody FoodDTO food) {
         Optional<Food> optionalFood = foodService.getFoodById(id);
         if (optionalFood.isPresent()) {
             Food existingFood = optionalFood.get();
@@ -97,8 +97,7 @@ public class FoodController {
             existingFood.setDescription(food.getDescription());
             existingFood.setPrice(food.getPrice());
             existingFood.setImage(food.getImage());
-            existingFood.setCategory(food.getCategory());
-            existingFood.setIngredients(food.getIngredients());
+
 
             Food updatedFood = foodService.updateFood(id, existingFood);
             return ResponseEntity.ok(updatedFood);

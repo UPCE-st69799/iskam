@@ -1,6 +1,7 @@
 package upce.cz.iskam.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,7 @@ public class Ingredient {
     @Column(nullable = false)
     private Boolean allergen;
 
+    @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "ingredients",cascade = CascadeType.ALL)
     private List<Food> foods;
