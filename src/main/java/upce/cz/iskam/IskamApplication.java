@@ -24,7 +24,7 @@ public class IskamApplication {
 		return new BCryptPasswordEncoder();
 	}
 
-/*	@Bean
+	/*@Bean
 	CommandLineRunner run(UserService userService){
 		return args -> {
 			userService.saveRole(new Role(null,"ROLE__USER"));

@@ -9,6 +9,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -40,14 +41,8 @@ public class Food {
     private String image;
 
 
-    @ManyToMany
-    @JoinTable(name = "food_ingredient",
-            joinColumns = @JoinColumn(name = "food_id"),
-            inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
-
-    @ToString.Exclude
-    @JsonIgnore
-    private List<Ingredient> ingredients = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Collection<Ingredient> ingredients = new ArrayList<>();
 
 
 }
