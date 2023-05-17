@@ -50,7 +50,7 @@ public class FoodController {
     @Autowired
     private IngredientRepository ingredientRepository;
 
-    @GetMapping("/head")
+  /*  @GetMapping("/head")
     public ResponseEntity<List<Food>> getFoods(
             @RequestParam(required = false) Long categoryId,
             @RequestParam(required = false, name = "ingredientIds") List<Long> ingredientIds,
@@ -98,22 +98,22 @@ public class FoodController {
                 .header("X-Total-Count", String.valueOf(foodPage.getTotalElements()))
                 .header("X-Total-Pages", String.valueOf(totalPages))
                 .body(foods);
-    }
+    }*/
 
     @PostMapping("/query")
     public ResponseEntity<List<Food>> getFoods(
-            @RequestBody FoodFilterRequest filterRequest,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestBody Optional<FoodFilterRequest> filterRequest,
+            @RequestParam(defaultValue = "0") Optional<Integer> page,
+            @RequestParam(defaultValue = "6") Optional<Integer> size
     ) {
         // Získání filtrů z requestu
-        Long categoryId = filterRequest.getCategoryId();
-        List<Long> ingredientIds = filterRequest.getIngredientIds();
-        List<Long> ingredientIdsExclude = filterRequest.getIngredientIdsExclude();
-        String name = filterRequest.getName();
+        Long categoryId = filterRequest.map(FoodFilterRequest::getCategoryId).orElse(null);
+        List<Long> ingredientIds = filterRequest.map(FoodFilterRequest::getIngredientIds).orElse(null);
+        List<Long> ingredientIdsExclude = filterRequest.map(FoodFilterRequest::getIngredientIdsExclude).orElse(null);
+        String name = filterRequest.map(FoodFilterRequest::getName).orElse(null);
 
         // Vytvoření objektu Pageable pro stránkování
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page.orElse(0), size.orElse(6));
 
         // Vytvoření objektu Specification pro filtry
         Specification<Food> specification = Specification.where(null);
@@ -160,11 +160,31 @@ public class FoodController {
     }
 
 
+
     @GetMapping("")
-    public ResponseEntity<List<Food>> getAllFoods() {
+    public ResponseEntity<List<Food>> getAllFoods(
+            @RequestParam(defaultValue = "6") int size,
+            @RequestParam(defaultValue = "0") int page) {
         List<Food> foods = foodService.getAllFoods();
-        return ResponseEntity.ok(foods);
+
+        // Počet záznamů
+        int totalCount = foods.size();
+
+        // Stránkování
+        int totalPages = (int) Math.ceil((double) totalCount / size);
+
+        // Oříznutí záznamů na aktuální stránku
+        int fromIndex = Math.min(page * size, totalCount);
+        int toIndex = Math.min(fromIndex + size, totalCount);
+        List<Food> pagedFoods = foods.subList(fromIndex, toIndex);
+
+        return ResponseEntity.ok()
+                .header("X-Total-Count", String.valueOf(totalCount))
+                .header("X-Total-Pages", String.valueOf(totalPages))
+                .header("X-Actual-Pages", String.valueOf(page))
+                .body(pagedFoods);
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Food> getFoodById(@PathVariable Long id) {
