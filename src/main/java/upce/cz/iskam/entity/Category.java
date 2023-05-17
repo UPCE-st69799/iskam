@@ -24,9 +24,6 @@ public class Category {
     @Column(nullable = false)
     private String name;
 
-    @JsonIgnore
-    @ToString.Exclude
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Food> foods = new ArrayList<>();
+
 
 }
