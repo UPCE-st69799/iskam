@@ -35,9 +35,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         http.authorizeHttpRequests().antMatchers("/login").permitAll();
-        http.authorizeHttpRequests().antMatchers("/ingredients").permitAll();
-        http.authorizeHttpRequests().antMatchers("/appFood").permitAll();
-        http.authorizeHttpRequests().antMatchers(GET,"/api/user/**").hasAnyAuthority("ROLE_USER");
+        http.authorizeHttpRequests().antMatchers(GET,"/appCategory").permitAll();
+        http.authorizeHttpRequests().antMatchers(POST,"/appCategory").hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeHttpRequests().antMatchers(GET,"/ingredients").permitAll();
+        http.authorizeHttpRequests().antMatchers(POST,"/ingredients").hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeHttpRequests().antMatchers(GET,"/appFood").permitAll();
+        http.authorizeHttpRequests().antMatchers(POST,"/appFood/query?**").permitAll();
+        http.authorizeHttpRequests().antMatchers(POST,"/appFood/query").permitAll();
+        http.authorizeHttpRequests().antMatchers(POST,"/appFood/query**").permitAll();
+        http.authorizeHttpRequests().antMatchers(GET,"/api/user/**").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeHttpRequests().antMatchers(POST,"/api/user/save/**").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeHttpRequests().anyRequest().permitAll();
         //http.authorizeHttpRequests().anyRequest().authenticated();
