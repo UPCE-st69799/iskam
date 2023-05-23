@@ -122,9 +122,6 @@ public class FoodController {
                 .body(foods);
     }
 
-
-
-
     @GetMapping("")
     public ResponseEntity<List<Food>> getAllFoods(
             @RequestParam(defaultValue = "6") int size,
