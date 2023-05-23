@@ -23,6 +23,6 @@ public interface FoodRepository extends JpaRepository<Food,Long>, JpaSpecificati
 
     @Query("SELECT f FROM Food f WHERE NOT EXISTS (SELECT i FROM f.ingredients i WHERE i.id IN :ingredientIds)")
     Page<Food> findFoodsWithoutIngredients(@Param("ingredientIds") List<Long> ingredientIds, Pageable pageable);
-
+    boolean existsByName(String name);
 }
 

@@ -23,8 +23,8 @@ public class IskamApplication {
 	PasswordEncoder passwordEncoder(){
 		return new BCryptPasswordEncoder();
 	}
-
-	/*@Bean
+/*
+	@Bean
 	CommandLineRunner run(UserService userService){
 		return args -> {
 			userService.saveRole(new Role(null,"ROLE__USER"));

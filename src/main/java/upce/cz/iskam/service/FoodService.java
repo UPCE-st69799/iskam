@@ -53,6 +53,9 @@ public class FoodService {
         return food;
     }
 
+    public boolean existsByName(String name) {
+        return foodRepository.existsByName(name);
+    }
     @Transactional
     public List<Food> getAllFoods() {
         return (List<Food>) foodRepository.findAll();

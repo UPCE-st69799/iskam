@@ -7,6 +7,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.data.domain.Sort;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import upce.cz.iskam.component.ApiResponse;
@@ -161,8 +162,14 @@ public class FoodController {
     }
 
     @PostMapping("")
-    public ResponseEntity<?> createFood(@RequestBody FoodDTO foodDTO) {
+    public ResponseEntity<?> createFood(@RequestBody @Validated FoodDTO foodDTO) {
         try {
+            // Check if a food with the same name already exists
+            if (foodService.existsByName(foodDTO.getName())) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body(new ApiResponse(false, "Food with the same name already exists"));
+            }
+
             // Get the category for the food
             Category category = categoryService.getCategoryById(foodDTO.getCategoryId())
                     .orElseThrow(() -> new IllegalArgumentException("Invalid category ID"));
@@ -187,12 +194,13 @@ public class FoodController {
             // Save the new food to the database
             foodService.createFood(food, ingredients);
 
-            return null;
+            return ResponseEntity.ok().body(new ApiResponse(true, "Food created successfully"));
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse(false, "Failed to create food"));
         }
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateFood(@PathVariable Long id, @RequestBody FoodDTO food) {
