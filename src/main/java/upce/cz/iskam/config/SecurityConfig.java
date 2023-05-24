@@ -32,19 +32,34 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         http.authorizeHttpRequests().antMatchers("/login").permitAll();
+
         http.authorizeHttpRequests().antMatchers(GET,"/appCategory").permitAll();
+        http.authorizeHttpRequests().antMatchers(DELETE,"/appCategory/**").hasAnyAuthority("ROLE__ADMIN");
+        http.authorizeHttpRequests().antMatchers(POST,"/appCategory").hasAnyAuthority("ROLE__ADMIN");
+        http.authorizeHttpRequests().antMatchers(PUT,"/appCategory/**").hasAnyAuthority("ROLE__ADMIN");
+
         http.authorizeHttpRequests().antMatchers(GET,"/ingredients").permitAll();
-        http.authorizeHttpRequests().antMatchers(GET,"/appFood").hasAnyAuthority("ROLE__ADMIN");
+        http.authorizeHttpRequests().antMatchers(DELETE,"/ingredients/**").hasAnyAuthority("ROLE__ADMIN");
+        http.authorizeHttpRequests().antMatchers(POST,"/ingredients").hasAnyAuthority("ROLE__ADMIN");
+        http.authorizeHttpRequests().antMatchers(PUT,"/ingredients/**").hasAnyAuthority("ROLE__ADMIN");
+
+        http.authorizeHttpRequests().antMatchers(GET,"/appFood").permitAll();
         http.authorizeHttpRequests().antMatchers(POST,"/appFood/query?**").permitAll();
-        http.authorizeHttpRequests().antMatchers(PUT,"/appFood").hasAnyAuthority("ROLE__ADMIN");
         http.authorizeHttpRequests().antMatchers(POST,"/appFood/query").permitAll();
         http.authorizeHttpRequests().antMatchers(POST,"/appFood/query**").permitAll();
-        http.authorizeHttpRequests().antMatchers(POST,"/appCategory").hasAnyAuthority("ROLE__ADMIN");
-        http.authorizeHttpRequests().antMatchers(POST,"/ingredients").hasAnyAuthority("ROLE__ADMIN");
+        http.authorizeHttpRequests().antMatchers(DELETE,"/appFood/**").hasAnyAuthority("ROLE__ADMIN");
+        http.authorizeHttpRequests().antMatchers(POST,"/appFood").hasAnyAuthority("ROLE__ADMIN");
+        http.authorizeHttpRequests().antMatchers(PUT,"/appFood/**").hasAnyAuthority("ROLE__ADMIN");
+
+
+        http.authorizeHttpRequests().antMatchers(POST,"/api/user/save/**").hasAnyAuthority("ROLE__SUPER_ADMIN");
         http.authorizeHttpRequests().antMatchers(GET,"/api/user/**").hasAnyAuthority("ROLE__ADMIN");
-        http.authorizeHttpRequests().antMatchers(POST,"/api/user/save/**").hasAnyAuthority("ROLE__ADMIN");
+        http.authorizeHttpRequests().antMatchers(POST,"/api/user/**").hasAnyAuthority("ROLE__SUPER_ADMIN");
+        http.authorizeHttpRequests().antMatchers(PUT,"/api/user/**").hasAnyAuthority("ROLE__SUPER_ADMIN");
+        http.authorizeHttpRequests().antMatchers(DELETE,"/api/user/**").hasAnyAuthority("ROLE__SUPER_ADMIN");
+
         //http.authorizeHttpRequests().anyRequest().authenticated();
-        http.authorizeHttpRequests().anyRequest().permitAll();
+        //http.authorizeHttpRequests().anyRequest().authenticated();
         http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
