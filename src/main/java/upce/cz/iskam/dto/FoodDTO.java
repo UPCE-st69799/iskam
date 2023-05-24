@@ -30,6 +30,7 @@ public class FoodDTO {
     @NotNull(message = "Category ID is required")
     private Long categoryId;
 
+    @NotNull(message = "Image is required")
     private String image;
 
 

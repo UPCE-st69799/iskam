@@ -204,25 +204,34 @@ public class FoodController {
         Optional<Food> optionalFood = foodService.getFoodById(id);
         if (optionalFood.isPresent()) {
             Food existingFood = optionalFood.get();
-            existingFood.setName(food.getName());
-            existingFood.setDescription(food.getDescription());
-            existingFood.setPrice(food.getPrice());
-            existingFood.setImage(food.getImage());
 
-            // Příklad změny ingrediencí
-            List<Ingredient> ingredients = food.getIngredients().stream()
-                    .map(ingredientId -> ingredientService.getIngredientById(ingredientId))
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
-                    .collect(Collectors.toList());
-            existingFood.setIngredients(ingredients);
+            if (food.getName() != null) {
+                existingFood.setName(food.getName());
+            }
+            if (food.getDescription() != null) {
+                existingFood.setDescription(food.getDescription());
+            }
+            if (food.getPrice() != null) {
+                existingFood.setPrice(food.getPrice());
+            }
+            if (food.getImage() != null) {
+                existingFood.setImage(food.getImage());
+            }
+            if (food.getIngredients() != null) {
+                List<Ingredient> ingredients = food.getIngredients().stream()
+                        .map(ingredientId -> ingredientService.getIngredientById(ingredientId)
+                                .orElseThrow(() -> new IllegalArgumentException("Invalid ingredient ID: " + ingredientId)))
+                        .collect(Collectors.toList());
+                existingFood.setIngredients(ingredients);
+            }
 
-            Food updatedFood = foodService.updateFood(id, existingFood);
+            Food updatedFood = foodService.updateFood(id,existingFood);
             return ResponseEntity.ok(updatedFood);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
+
 
 
 
