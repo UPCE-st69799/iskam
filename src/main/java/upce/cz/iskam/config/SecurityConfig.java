@@ -13,8 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.*;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
@@ -34,17 +33,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         http.authorizeHttpRequests().antMatchers("/login").permitAll();
         http.authorizeHttpRequests().antMatchers(GET,"/appCategory").permitAll();
-        http.authorizeHttpRequests().antMatchers(POST,"/appCategory").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeHttpRequests().antMatchers(GET,"/ingredients").permitAll();
-        http.authorizeHttpRequests().antMatchers(POST,"/ingredients").hasAnyAuthority("ROLE_ADMIN");
-        http.authorizeHttpRequests().antMatchers(GET,"/appFood").permitAll();
+        http.authorizeHttpRequests().antMatchers(GET,"/appFood").hasAnyAuthority("ROLE__ADMIN");
         http.authorizeHttpRequests().antMatchers(POST,"/appFood/query?**").permitAll();
+        http.authorizeHttpRequests().antMatchers(PUT,"/appFood").hasAnyAuthority("ROLE__ADMIN");
         http.authorizeHttpRequests().antMatchers(POST,"/appFood/query").permitAll();
         http.authorizeHttpRequests().antMatchers(POST,"/appFood/query**").permitAll();
-        http.authorizeHttpRequests().antMatchers(GET,"/api/user/**").hasAnyAuthority("ROLE_ADMIN");
-        http.authorizeHttpRequests().antMatchers(POST,"/api/user/save/**").hasAnyAuthority("ROLE_ADMIN");
-        http.authorizeHttpRequests().anyRequest().permitAll();
+        http.authorizeHttpRequests().antMatchers(POST,"/appCategory").hasAnyAuthority("ROLE__ADMIN");
+        http.authorizeHttpRequests().antMatchers(POST,"/ingredients").hasAnyAuthority("ROLE__ADMIN");
+        http.authorizeHttpRequests().antMatchers(GET,"/api/user/**").hasAnyAuthority("ROLE__ADMIN");
+        http.authorizeHttpRequests().antMatchers(POST,"/api/user/save/**").hasAnyAuthority("ROLE__ADMIN");
         //http.authorizeHttpRequests().anyRequest().authenticated();
+        http.authorizeHttpRequests().anyRequest().permitAll();
         http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
